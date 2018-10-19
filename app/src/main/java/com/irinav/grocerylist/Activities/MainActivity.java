@@ -1,6 +1,8 @@
 package com.irinav.grocerylist.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -10,7 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.irinav.grocerylist.Data.DatabaseHandler;
+import com.irinav.grocerylist.Model.Grocery;
 import com.irinav.grocerylist.R;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,10 +26,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText quantity;
     private Button saveButton;
 
+    private DatabaseHandler db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = new DatabaseHandler(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -56,13 +67,38 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: Save to database
                 // TODO: Go to next screen
 
-                saveGroceryToDb(v);
+                if (!groceryItem.getText().toString().isEmpty() && !quantity.getText().toString().isEmpty()) {
+                    saveGroceryToDb(v);
+                }
+
             }
         });
     }
 
 
     private void saveGroceryToDb(View v) {
+        Grocery grocery = new Grocery();
+
+        String newGrocery = groceryItem.getText().toString();
+        String newQuantity = quantity.getText().toString();
+
+        grocery.setName(newGrocery);
+        grocery.setQuantity(newQuantity);
+
+        // Save to db
+
+        db.addGrocery(grocery);
+
+        Snackbar.make(v, "Item saved!", Snackbar.LENGTH_LONG).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+                // start a new activity
+                startActivity(new Intent (MainActivity.this, ListActivity.class));
+            }
+        }, 1000);
 
     }
 }
