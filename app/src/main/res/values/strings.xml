@@ -8,5 +8,6 @@
     <string name="hint_item">Item</string>
     <string name="hint_qty">Quantity</string>
     <string name="save_button">Save Item</string>
-    <string name="title_activity_list">ListActivity</string>
+    <string name="title_activity_list">Groceries List</string>
+    <string name="confirm_text">Are you sure?</string>
 </resources>

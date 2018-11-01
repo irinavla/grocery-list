@@ -44,26 +44,27 @@ public class ListActivity extends AppCompatActivity {
         db = new DatabaseHandler(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewId);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager( new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        groceryList = new ArrayList<>();
-        listItems = new ArrayList<>();
+        groceryList =  new ArrayList<>();
+        listItems =  new ArrayList<>();
 
-        // get items from database
+        // get items from db
         groceryList = db.getAllGroceries();
 
-        for ( Grocery c : groceryList ) {
+        for ( Grocery c: groceryList ) {
             Grocery grocery = new Grocery();
             grocery.setName(c.getName());
             grocery.setQuantity("Qty: " + c.getQuantity());
             grocery.setId(c.getId());
-            grocery.setDateItemAdded("Added on " + c.getDateItemAdded());
+            grocery.setDateItemAdded("Added on: " + c.getDateItemAdded());
 
             listItems.add(grocery);
         }
 
         recyclerViewAdapter = new RecyclerViewAdapter(this, listItems);
         recyclerView.setAdapter(recyclerViewAdapter);
+
         recyclerViewAdapter.notifyDataSetChanged();
     }
 

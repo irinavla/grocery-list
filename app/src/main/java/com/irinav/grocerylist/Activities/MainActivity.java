@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        bypassActivity();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,5 +102,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 1000);
 
+    }
+
+    public void bypassActivity() {
+        // check if we have data in db; if not, go to items list
+
+        if (db.getGroceriesCount() > 0) {
+            startActivity(new Intent (MainActivity.this, ListActivity.class));
+            finish();
+        }
     }
 }
